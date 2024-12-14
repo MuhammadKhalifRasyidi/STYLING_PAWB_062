@@ -1,73 +1,106 @@
-
+/* General styles */
 body {
-    background-color: #f4f7fc;
+    background: linear-gradient(to right, #f4f7fc, #e6eff8);
     font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     max-width: 960px;
 }
 
+/* Card styling */
 .card {
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    transition: all 0.3s ease-in-out;
 }
 
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Card body styling */
 .card-body {
     background-color: #fff;
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 20px;
     text-align: center;
+    color: #555;
+    position: relative;
+    transition: background-color 0.3s ease;
 }
 
+.card-body:hover {
+    background-color: #f8f9fa;
+}
+
+/* Card title styling */
 .card-title {
-    color: #D80B12;
     font-size: 2.5rem;
     font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
+/* Card text styling */
 .card-text {
-    color: #555;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1.7;
+    color: #555;
+    margin-bottom: 20px;
 }
 
+/* Card image styling */
 .card img {
     border-radius: 15px;
     max-width: 100%;
     height: auto;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .card img:hover {
     transform: scale(1.05);
+    filter: brightness(90%);
 }
 
+/* Centering and spacing adjustments */
 .text-center {
     margin-top: 20px;
 }
 
+/* Primary button styling */
 .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
     font-size: 1.2rem;
     padding: 12px 25px;
     border-radius: 50px;
-    transition: background-color 0.3s;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
     background-color: #0056b3;
     border-color: #004085;
+    transform: translateY(-5px);
 }
 
+/* Spacing between sections */
 .my-4 {
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
 
-@media (max-width: 768px) {
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) { 
     .card-title {
         font-size: 2rem;
     }
@@ -75,4 +108,10 @@ body {
     .card-text {
         font-size: 1rem;
     }
+
+    .btn-primary {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
 }
+

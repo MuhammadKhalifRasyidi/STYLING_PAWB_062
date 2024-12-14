@@ -1,7 +1,7 @@
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    background: linear-gradient(to right, #e9ecef, #f8f9fa);
     color: #333;
     margin: 0;
     padding: 0;
@@ -12,12 +12,9 @@ h1 {
     color: #007bff;
     text-align: center;
     margin-bottom: 2rem;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* Add button styling */
@@ -27,118 +24,106 @@ h1 {
     padding: 15px;
     font-weight: bold;
     text-transform: uppercase;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    background-color: #d00034;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 #addKegiatanBtn:hover {
-    background-color: #0056b3;
-    color: #fff;
+    background-color: #283033;
+    transform: translateY(-5px);
 }
 
 /* Card styling */
 .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
+    height: 100%;
 }
 
 .card:hover {
-    transform: scale(1.02);
+    transform: scale(1.05);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
 }
 
+/* Background for jenis kegiatan */
 .card-header {
-    background-color: #007bff;
-    color: #fff;
-    font-size: 1.2rem;
-    padding: 15px;
+    background: linear-gradient(to right, #CE0C0D, #283033);
+    color: #fff !important; /* Memastikan teks selalu berwarna putih */
+    font-size: 1.3rem;
+    padding: 20px;
     text-align: center;
+    font-weight: bold;
 }
 
 .card-body {
-    padding: 15px;
-    background-color: #fff;
+    padding: 20px;
+    background-color: #ffffff;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card-body p {
     font-size: 1rem;
     color: #555;
+    margin-bottom: 15px;
 }
 
-/* Buttons inside cards */
+/* Container untuk tombol */
+.card-body .btn-container {
+    display: flex;
+    gap: 20px; /* Memberikan jarak horizontal antar tombol */
+    justify-content: flex-start; /* Tombol sejajar ke kiri */
+}
+
+/* Button styles */
 .card-body .btn {
-    margin-right: 10px;
     text-transform: uppercase;
     font-size: 0.9rem;
     transition: all 0.3s;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
 .card-body .btn-warning {
-    color: #fff;
     background-color: #f0ad4e;
-    border-color: #f0ad4e;
+    color: #fff;
 }
 
+/* Hover effect for Update button */
 .card-body .btn-warning:hover {
-    background-color: #ec971f;
-    border-color: #d58512;
+    background-color: #ec971f; /* Warna lebih gelap */
+    transform: translateY(-3px); /* Sedikit naik */
+    box-shadow: 0 5px 15px rgba(240, 173, 78, 0.4); /* Bayangan */
 }
 
 .card-body .btn-danger {
     background-color: #d9534f;
-    border-color: #d43f3a;
     color: #fff;
 }
 
+/* Hover effect for Delete button */
 .card-body .btn-danger:hover {
-    background-color: #c9302c;
-    border-color: #ac2925;
+    background-color: #c9302c; /* Warna lebih gelap */
+    transform: translateY(-3px); /* Sedikit naik */
+    box-shadow: 0 5px 15px rgba(217, 83, 79, 0.4); /* Bayangan */
 }
 
-/* Modal styling */
-.modal-content {
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-    background-color: #007bff;
-    color: #fff;
-    border-bottom: none;
-    padding: 15px;
-}
-
-.modal-header .close {
-    color: #fff;
-    opacity: 1;
-}
-
-.modal-body {
+/* Grid styling for 3 cards per row */
+#kegiatanCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     padding: 20px;
-    background-color: #f8f9fa;
-}
-
-.modal-footer {
-    border-top: none;
-    padding: 15px;
-}
-
-.modal-footer .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: #fff;
-}
-
-.modal-footer .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-}
-
-.modal-footer .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
 }
 
 /* Responsiveness */
@@ -148,16 +133,20 @@ h1 {
     }
 
     #addKegiatanBtn {
-        font-size: 1rem;
-        padding: 10px;
+        font-size: 1.2rem;
+        padding: 12px;
     }
 
     .card-header {
-        font-size: 1rem;
-        padding: 10px;
+        font-size: 1.1rem;
+        padding: 12px;
     }
 
     .card-body p {
         font-size: 0.9rem;
+    }
+
+    .card-body .btn-container {
+        flex-wrap: wrap; /* Jika layar sempit, tombol akan turun ke baris berikutnya */
     }
 }

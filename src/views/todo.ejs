@@ -148,8 +148,10 @@
                                     </div>
                                     <div class="card-body">
                                         <p>${kegiatan.deskripsi}</p>
-                                        <button class="btn btn-warning btn-sm editBtn" data-id="${kegiatan.id}" data-jenis="${kegiatan.jenis_kegiatan}" data-deskripsi="${kegiatan.deskripsi}">Update</button>
-                                        <button class="btn btn-danger btn-sm deleteBtn" data-id="${kegiatan.id}">Delete</button>
+                                        <div class="btn-container"> <!-- Tambahkan wadah untuk tombol -->
+                                            <button class="btn btn-warning btn-sm editBtn" data-id="${kegiatan.id}" data-jenis="${kegiatan.jenis_kegiatan}" data-deskripsi="${kegiatan.deskripsi}">Update</button>
+                                            <button class="btn btn-danger btn-sm deleteBtn" data-id="${kegiatan.id}">Delete</button>
+                                        </div>
                                     </div>
                                 </div>
                             `);
