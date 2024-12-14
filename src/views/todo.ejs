@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/todo.css">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <h1>To-Do</h1>
+        <div class="row">
+            <!-- Card for Create Kegiatan -->
+            <div class="col-md-12 mb-4">
+                <button class="btn btn-primary" id="addKegiatanBtn" style="font-size: 1.2rem;">
+                    <i class="fas fa-plus"></i> Tambah Kegiatan
+                </button>
+            </div>
+
+            <!-- Cards for Daftar Kegiatan -->
+            <div class="col-md-12" id="kegiatanCards">
+                <!-- Kegiatan cards will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+     <!-- Modal for Create Kegiatan -->
+     <div class="modal fade" id="addKegiatanModal" tabindex="-1" role="dialog" aria-labelledby="addKegiatanModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addKegiatanModalLabel">Tambah Kegiatan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addKegiatanForm">
+                        <div class="form-group">
+                            <label for="jenisKegiatanInput">Jenis Kegiatan</label>
+                            <input type="text" class="form-control" id="jenisKegiatanInput" placeholder="Masukkan jenis kegiatan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deskripsiInput">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsiInput" rows="3" placeholder="Masukkan deskripsi kegiatan" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveKegiatanBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Edit Kegiatan -->
+    <div class="modal" id="editKegiatanModal" tabindex="-1" role="dialog" aria-labelledby="editKegiatanModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editKegiatanModalLabel">Edit Kegiatan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editJenisKegiatan">Jenis Kegiatan</label>
+                        <input type="text" class="form-control" id="editJenisKegiatan" placeholder="Jenis kegiatan">
+                    </div>
+                    <div class="form-group">
+                        <label for="editDeskripsi">Deskripsi</label>
+                        <textarea class="form-control" id="editDeskripsi" rows="3" placeholder="Deskripsi kegiatan"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">Save Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Handle Create Kegiatan
+            $('#addKegiatanBtn').on('click', function() {
+                $('#addKegiatanModal').modal('show');
+            });
+
+            // handle btnClose kegiatan
+            $('.btn-secondary').on('click', function() {
+                $('#addKegiatanModal').modal('hide');
+            });
+
+            // handle close X
+            $('.close').on('click', function() {
+                $('#addKegiatanModal').modal('hide');
+            });
+
+
+            // Handle btnSave Kegiatan
+            $('#saveKegiatanBtn').on('click', function() {
+                const jenis_kegiatan = $('#jenisKegiatanInput').val();
+                const deskripsi = $('#deskripsiInput').val();
+
+                if (jenis_kegiatan && deskripsi) {
+                    $.ajax({
+                        url: '/kegiatan',
+                        type: 'POST',
+                        data: { jenis_kegiatan, deskripsi },
+                        success: function(response) {
+                            $('#addKegiatanModal').modal('hide'); // Close modal
+                            fetchKegiatan();  // Refresh the list of kegiatan after adding
+                        },
+                        error: function() {
+                            alert('Gagal menambah kegiatan');
+                        }
+                    });
+                } else {
+                    alert('Harap isi semua data sebelum menyimpan');
+                }
+            });
+
+            // Fetch all Kegiatan
+            fetchKegiatan();
+
+            function fetchKegiatan() {
+                $.get('/kegiatan/daftarkegiatan', function(data) {
+                    const kegiatanCards = $('#kegiatanCards');
+                    kegiatanCards.empty();
+
+                    // Check if data is an array before proceeding
+                    if (Array.isArray(data)) {
+                        data.forEach(kegiatan => {
+                            kegiatanCards.append(`
+                                <div class="card mb-3" id="kegiatanCard-${kegiatan.id}">
+                                    <div class="card-header">
+                                        <strong>${kegiatan.jenis_kegiatan}</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>${kegiatan.deskripsi}</p>
+                                        <button class="btn btn-warning btn-sm editBtn" data-id="${kegiatan.id}" data-jenis="${kegiatan.jenis_kegiatan}" data-deskripsi="${kegiatan.deskripsi}">Update</button>
+                                        <button class="btn btn-danger btn-sm deleteBtn" data-id="${kegiatan.id}">Delete</button>
+                                    </div>
+                                </div>
+                            `);
+                        });
+
+                        // Edit button functionality
+                        $('.editBtn').on('click', function() {
+                            const id = $(this).data('id');
+                            const jenis = $(this).data('jenis');
+                            const deskripsi = $(this).data('deskripsi');
+
+                            $('#editJenisKegiatan').val(jenis);
+                            $('#editDeskripsi').val(deskripsi);
+
+                            // Hapus event handler sebelumnya sebelum menambahkan yang baru
+                            $('#saveEditBtn').off('click').on('click', function() {
+                                const updatedJenis = $('#editJenisKegiatan').val();
+                                const updatedDeskripsi = $('#editDeskripsi').val();
+
+                                $.ajax({
+                                    url: `/kegiatan/${id}`,
+                                    type: 'PUT',
+                                    data: { jenis_kegiatan: updatedJenis, deskripsi: updatedDeskripsi },
+                                    success: function() {
+                                        $('#editKegiatanModal').modal('hide');
+                                        fetchKegiatan();  // Refresh the list after edit
+                                    },
+                                    error: function() {
+                                        alert('Gagal memperbarui kegiatan');
+                                    }
+                                });
+                            });
+
+                            $('#editKegiatanModal').modal('show');
+                        });
+
+                        // handle btnClose kegiatan
+                        $('.btn-secondary').on('click', function() {
+                            $('#editKegiatanModal').modal('hide');
+                        });
+                        
+                        // handle close X
+                        $('#editKegiatanModal .close').on('click', function() {
+                            $('#editKegiatanModal').modal('hide');
+                        });
+
+                        // Delete button functionality
+                        $('.deleteBtn').on('click', function() {
+                            const id = $(this).data('id');
+                            $.ajax({
+                                url: `/kegiatan/${id}`,
+                                type: 'DELETE',
+                                success: function() {
+                                    $(`#kegiatanCard-${id}`).remove();  // Remove the card from the UI
+                                },
+                                error: function() {
+                                    alert('Gagal menghapus kegiatan');
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
